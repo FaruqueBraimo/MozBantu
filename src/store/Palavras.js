@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import {dbPalavras, } from '../boot/firebase'
-
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 const state = {
 
@@ -48,6 +49,17 @@ const getters = {
 }
 
 const actions = {
+
+    loadItems ({ commit }) {
+        axios
+            .get('https://sanguemozapi.herokuapp.com/api/dadores', {
+               
+            })
+            .then(response => response.data)
+            .then(items => {
+                console.log('aqui');
+        })
+    },
 
     listenPalavraRealTimeChanges ({state, commit}, hasInternetConection) {
 

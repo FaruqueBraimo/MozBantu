@@ -100,6 +100,7 @@ mounted(){
            
            palavraId(){
           return this.$route.params.id;
+
         },
 
         palavra(){
@@ -125,9 +126,13 @@ mounted(){
   }
   
   },
+  mounted(){
+  this.loadItems();
+  },
+
     methods:{
         ...mapActions ('palavra', [
-               'updatePalavra'
+               'updatePalavra', 'loadItems'
            ]),
 
 
@@ -137,6 +142,7 @@ mounted(){
           },
       favorito(){
 
+    
             if (this.palavraId){
              this.saveObject.favorito = !this.palavras[this.palavraId].favorito 
               
