@@ -1,29 +1,25 @@
 <template>
-<q-page class=" " v-if="mostrar"> 
-   
-  <div class="text-body1  text-grey-9
- " >
+<q-page  v-if="mostrar"> 
+ 
         
-    <q-card  flat class="my-card  text-weight-light touch "
+    <q-card  flat class="my-card text-justify text-weight text-body1 "
     square
     >
-      <q-card-section class=" text-justify customf">
-       Este aplicativo contém  uma série de palavras em  <b class="text-italic">koty</b>, lingua materna de Angoche, traduzidas em português.
+   
+       <q-card-section >
+                Este aplicativo contém  uma série de palavras em  <b class="text-italic">koty</b>, lingua materna de Angoche, traduzidas em português.
+
+              As mesmas palavras não foram confirmadas por um especialista em Linguas <b class="text-italic">Bantu</b> ,elas foram coletadas pelo próprio desenvolvedor do aplicativo. Por tanto as palavras podem estar sujeitas a erros de grafia, de fonética e por aí vai. 
       </q-card-section>
 
-       <q-card-section class="text text-justify	">
-       As mesmas palavras não foram confirmadas por um especialista em Linguas <b class="text-italic">Bantu</b> ,elas foram coletadas pelo próprio desenvolvedor do aplicativo. Por tanto as palavras podem estar sujeitas a erros de grafia, de fonética e por aí vai. 
-      </q-card-section>
-
-      <q-card-section class="text-justify	"> 
-          Se você encontrar algo que parece não fazer sentido ou  se estiver interressado em colaborar com mais palavras, por favor ,<b class="text-italic">feel free</b> em me contactar:
+      <q-card-section > 
+          Se você encontrar algo que parece não fazer sentido ou  se estiver interressado em colaborar com mais palavras, por favor, <b class="text-italic">feel free</b> em me contactar:
       </q-card-section>
     </q-card>
     
 
-   </div> 
    
-   <div class=" text-weight-light touch q-pl-md   text-grey-9 fixed-bottom" >
+   <div class=" text-weight-light touch q-pl-xl q-pb-md  text-grey-9 fixed-bottom" >
     
      
 

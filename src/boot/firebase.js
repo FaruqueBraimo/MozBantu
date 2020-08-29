@@ -23,7 +23,7 @@ export const firebaseAuth = firebaseApp.auth();
 
 // ==== Firebase firestore db
 export const db = firebaseApp.firestore();
-firebase.firestore().enablePersistence()
+db.enablePersistence()
   .catch(function(err) {
       if (err.code == 'failed-precondition') {
           // Multiple tabs open, persistence can only be enabled
