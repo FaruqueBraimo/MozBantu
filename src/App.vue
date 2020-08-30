@@ -41,7 +41,11 @@ export default {
   created() {
     this.darkStatus;
     this.listenPalavraRealTimeChanges();
-    this.loadItems()
+    this.loadItems();
+    this.getData();
+    this.getHistory();
+
+    
     this.$q.addressbarColor.set("#AED581");
     this.settings = this.$q.localStorage.getItem('settings')
 
@@ -56,7 +60,9 @@ export default {
   },
 
   methods: {
-    ...mapActions("palavra", ["listenPalavraRealTimeChanges",'loadItems'])
+    ...mapActions("palavra", ["listenPalavraRealTimeChanges",'loadItems','getData']),
+        ...mapActions("histo", ["getHistory"])
+
   }
 };
 </script>

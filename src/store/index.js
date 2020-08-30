@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 
 import palavra from './Palavras'
 import config from './configs'
+import histo from './history'
 
 
 Vue.use(Vuex)
@@ -23,7 +24,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
        palavra ,
-       config
+       config,
+       histo
 
     },
 

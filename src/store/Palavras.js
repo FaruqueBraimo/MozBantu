@@ -5,7 +5,7 @@ import VueAxios from 'vue-axios'
 
 const state = {
 
-    palavras: {},
+    palavras: [],
     loading: false,
     uploadProgress: -1,
     palavraSearchKey:  '',
@@ -20,7 +20,8 @@ const state = {
 const mutations = {
 
     addPalavra (state, payload) {
-       Vue.set(state.palavras, payload.id, payload.object)
+       state.palavras.push(payload.object)
+
     },
 
     addPalavraAPI (state, payload) {
@@ -62,7 +63,26 @@ const actions = {
 
     loadItems ({ commit }) {
         axios
-            .get('https://sanguemozapi.herokuapp.com/api/dadores', {
+            .get('http://localhost:8081/api/emakua', {
+               
+            })
+            .then(response => response.data)
+            .then(items => {
+                
+                commit('addPalavraAPI', {
+                    id: items.id,
+                    object: items
+                })
+             
+        })
+    },
+
+
+
+    
+    getData ({ commit }) {
+        axios
+            .get('http://localhost:8081/api/xangana', {
                
             })
             .then(response => response.data)
@@ -71,10 +91,11 @@ const actions = {
                 items.forEach(element => {
             
                 });
-                commit('addPalavraAPI', {
-                    id: items.codigo,
+                commit('addPalavra', {
+                    id: items.id,
                     object: items
                 })
+                
              
         })
     },
@@ -86,10 +107,10 @@ const actions = {
                 snapshot.docChanges().forEach(function(change) {
 
                     if (change.type === "added") {
-                        commit('addPalavra', {
-                            id: change.doc.id,
-                            object: change.doc.data()
-                        })
+                        // commit('addPalavra', {
+                        //     id: change.doc.id,
+                        //     object: change.doc.data()
+                        // })
                     }
                     if (change.type === "modified") {
                         commit('updatePalavra', {
