@@ -5,11 +5,11 @@
       enter-active-class="animated pulse"
       leave-active-class="animated zoomOut"
     >
-      <q-list class="rounded-borders"  v-if=" Object.keys(palavras).length> 0">
-        <template v-for="(i, id, index) in searchPalavras(palavras)">
-          <q-item class="q-mb-sm" clickable v-ripple :key="id">
+      <q-list class="rounded-borders"  v-if=" Object.keys(getWords).length> 0">
+        <template>
+          <q-item class="q-mb-sm" clickable v-ripple  v-for="(i,index, id) in getWords" :key="i">
             <q-item-section @click="details(id)">
-              <q-item-label class="text-body1"> {{ i.traducao }}</q-item-label>
+              <q-item-label class="text-body1"> {{ i.nome || i.traducao }}</q-item-label>
             </q-item-section>
             <q-item-section side>
               <q-btn
@@ -26,18 +26,18 @@
           </q-item>
 
           <q-separator
-            :key="i.traducao"
-            v-if="index < Object.keys(palavras).length - 1"
+            :key="i.nome"
+            v-if="index < Object.keys(getWords).length - 1"
             spaced
             inset
           />
         </template>
       </q-list>
     </transition>
-    <div class="row q-pa-sm " v-for="i in 20" :key="i"  v-if=" Object.keys(palavras)== 0" >
+    <div class="row q-pa-sm " v-for="i in 20" :key="i"  v-if=" Object.keys(getWords)== 0" >
       <div class="col-10 q-pt-sm "            >
         <q-skeleton animation="wave" />
-      </div>
+      </div> 
       <div class="col-2  q-pl-md" >
         <q-skeleton type="QCheckbox" />
       </div>
@@ -51,8 +51,27 @@ import { date } from "quasar";
 
 export default {
   computed: {
-    ...mapState("palavra", ["palavras"]),
-    ...mapGetters("palavra", ["searchPalavras"])
+    ...mapState("palavra", ["palavras",'api']),
+    ...mapGetters("palavra", ["searchPalavras"]),
+
+    getWords() {
+        let words = {};
+        this.settings = this.$q.localStorage.getItem('settings');
+        if( this.settings.language == 'Xangana') {
+          words =  this.palavras
+        }
+        else {
+
+          this.api.forEach(element => {
+             words =  element
+          });
+         
+        }
+        return words
+    }
+
+
+
   },
   data() {
     return {
@@ -60,6 +79,7 @@ export default {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
       text: "oi",
       voiceSelect: "pt-BR",
+      settings: '',
       saveObject: {
         his: true,
         dataAcesso: new Date()

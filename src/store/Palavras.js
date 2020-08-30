@@ -8,7 +8,12 @@ const state = {
     palavras: {},
     loading: false,
     uploadProgress: -1,
-    palavraSearchKey:  ''
+    palavraSearchKey:  '',
+    koty: {},
+    Xanghana : {},
+    api : []
+
+
 
 }
 
@@ -17,6 +22,11 @@ const mutations = {
     addPalavra (state, payload) {
        Vue.set(state.palavras, payload.id, payload.object)
     },
+
+    addPalavraAPI (state, payload) {
+        state.api.push(payload.object)
+     },
+
     updatePalavra (state, payload) {
         Object.assign(state.palavras[payload.id], payload.updates)
     },
@@ -57,7 +67,15 @@ const actions = {
             })
             .then(response => response.data)
             .then(items => {
-                console.log('aqui');
+                
+                items.forEach(element => {
+            
+                });
+                commit('addPalavraAPI', {
+                    id: items.codigo,
+                    object: items
+                })
+             
         })
     },
 

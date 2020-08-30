@@ -41,6 +41,7 @@ export default {
   created() {
     this.darkStatus;
     this.listenPalavraRealTimeChanges();
+    this.loadItems()
     this.$q.addressbarColor.set("#AED581");
     this.settings = this.$q.localStorage.getItem('settings')
 
@@ -55,15 +56,17 @@ export default {
   },
 
   methods: {
-    ...mapActions("palavra", ["listenPalavraRealTimeChanges"])
+    ...mapActions("palavra", ["listenPalavraRealTimeChanges",'loadItems'])
   }
 };
 </script>
 
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,600&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@550&display=swap');
 
-#q-app {
-  font-family: "Dosis", sans-serif;
+#q-app{
+font-family: 'Dosis', sans-serif;
+
+
 }
 </style>

@@ -2,10 +2,12 @@
   <q-page class="q-py-md">
    
 
-    <dicionario-component
+  <dicionario-component
   :texto="texto"
-  
   />
+
+
+  
   </q-page>
 </template>
 

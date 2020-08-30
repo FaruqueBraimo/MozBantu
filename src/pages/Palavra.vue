@@ -65,13 +65,7 @@
 
 <style>
 
-@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans&display=swap');
 
-.ex {
-font-family: 'Alegreya Sans', sans-serif;
-
-
-}
 
 </style>
 
