@@ -3,10 +3,9 @@
     <div class="q-gutter-md row items-start">
       <q-card flat bordered   style="width: 500px">
         <q-card-section  >
-      
+      {{getFavorites}}
 <div class="row"> 
   
-      
        <div class="col-6 text-h6 q-pt-xs">
          <q-card-actions align="left" class="ex"
          >
@@ -18,7 +17,7 @@
         <div class="col-6 q-pl-md">
          <q-card-actions align="right">
          <q-btn flat round color="light-green-6" icon="record_voice_over"  @click="audio(palavra.name)"/>
-        <q-btn flat round :color="palavra.favorito==true ? 'red' : 'black' " icon="favorite" @click="favorito()"/>
+        <q-btn flat round :color="fav==true ? 'red' : 'black' " icon="favorite" @click="favorito()"/>
           </q-card-actions>
               </div>  
               </div>
@@ -90,6 +89,11 @@ mounted(){
            ...mapState ('palavra', [
                'palavras' , 'api'
            ]),
+
+           
+            ...mapState ('favorite', [
+               'favorites'
+           ]),
            
            
            palavraId(){
@@ -97,10 +101,14 @@ mounted(){
 
         },
 
+        
+
+
+
         palavra()
 
         {
-          let data = {};
+          let data = [];
           
               this.palavras.forEach(element => {
                element.forEach(e => {
@@ -122,14 +130,38 @@ mounted(){
                });
           });
 
-          
-
-
+        
 
 
           return data;
 
-        }
+        },
+
+         
+           getFavorites () {
+                let historico = ''
+
+            this.favorites.forEach((key,index) => {
+              
+                 key.forEach(element => {
+			if (element.payload.id== this.palavraId) {
+          
+         this.fav = true
+          }
+            else{
+               this.fav = false
+
+            }
+		});
+                    
+                    
+                 
+            })
+             
+   
+            
+            return historico
+}
 
            
            
@@ -143,6 +175,7 @@ mounted(){
         'wave'
         
       ],
+      fav: false,
       saveObject: {
         favorito : false
         } 
@@ -152,7 +185,9 @@ mounted(){
   },
   mounted(){
   this.loadItems();
-   this.addhistory(this.palavra); 
+  const array = Object.entries(this.palavra);
+  console.log(array)
+  this.addhistory(this.palavra); 
 
 
   },
@@ -162,6 +197,8 @@ mounted(){
                'updatePalavra', 'loadItems'
            ]),
         ...mapActions("histo", ["addhistory"]),
+        ...mapActions("favorite", ["addfavorite", 'removeChecked', 'getfavorite']),
+
 
 
   audio(val) {
@@ -172,13 +209,21 @@ mounted(){
 
     
             if (this.palavraId){
-             this.saveObject.favorito = !this.palavras[this.palavraId].favorito 
+              if(this.fav ) {
+                  this.removeChecked(this.palavraId);
+                                  this.fav = false
+                                  this.getfavorite
+
+
+              }
+              else {
+                            this.addfavorite(this.palavra)
+
+
+              }
               
             }
-          this.updatePalavra ({
-                        id: this.palavraId,
-                        updates: this.saveObject
-                    })
+          
       }
     }
 

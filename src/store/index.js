@@ -6,6 +6,8 @@ import Vuex from 'vuex'
 import palavra from './Palavras'
 import config from './configs'
 import histo from './history'
+import favorite from './favorites'
+
 
 
 Vue.use(Vuex)
@@ -25,7 +27,8 @@ export default function (/* { ssrContext } */) {
       // example
        palavra ,
        config,
-       histo
+       histo,
+       favorite
 
     },
 

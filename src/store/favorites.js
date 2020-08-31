@@ -5,10 +5,10 @@ import { LocalStorage, SessionStorage } from 'quasar'
 
 const state = {
 
-    historys: [],
+    favorites: [],
     loading: false,
     uploadProgress: -1,
-    historySearchKey:  '',
+    favoriteSearchKey:  '',
     koty: {},
     Xanghana : {},
     api : []
@@ -19,46 +19,46 @@ const state = {
 
 const mutations = {
 
-    addhistory (state, payload) {
-       state.historys.push(payload.object)
+    addfavorite (state, payload) {
+       state.favorites.push(payload.object)
        
 
     },
 
-    addhistoryAPI (state, payload) {
-        state.api.push(payload.object)
+    reset (state, payload) {
+        state.favorites = {}
      },
 
-    updatehistory (state, payload) {
-        Object.assign(state.historys[payload.id], payload.updates)
+    updatefavorite (state, payload) {
+        Object.assign(state.favorites[payload.id], payload.updates)
     },
-    deletehistory (state, id) {
-        Vue.delete(state.historys, id)
+    deletefavorite (state, id) {
+        Vue.delete(state.favorites, id)
     },
    
-    sethistorySearchKey(state, val) {
-        state.historySearchKey = val
+    setfavoriteSearchKey(state, val) {
+        state.favoriteSearchKey = val
     },
 }
 
 const getters = {
-    gethistoryById: (state) => (id) => {
-        return state.historys[id]
+    getfavoriteById: (state) => (id) => {
+        return state.favorites[id]
     }
         ,
 
 
-        gethistoryById: (state) => () => {
-            return state.historys[id]
+        getfavoriteById: (state) => () => {
+            return state.favorites[id]
         },
 
-    searchhistorys: (state) => (historys) => {
+    searchfavorites: (state) => (favorites) => {
         let object = {}
 
-        Object.keys(historys).forEach(key => {
-            let history = historys[key]
-            if (history.traducao.toLowerCase().includes(state.historySearchKey.toLowerCase())) {
-                object[key] = history
+        Object.keys(favorites).forEach(key => {
+            let favorite = favorites[key]
+            if (favorite.traducao.toLowerCase().includes(state.favoriteSearchKey.toLowerCase())) {
+                object[key] = favorite
             }
         })
         return object
@@ -76,7 +76,7 @@ const actions = {
             .then(response => response.data)
             .then(items => {
                 
-                commit('addhistoryAPI', {
+                commit('addfavoriteAPI', {
                     id: items.id,
                     object: items
                 })
@@ -87,20 +87,20 @@ const actions = {
 
 
     
-    getHistory ({ commit }) {
+    getfavorite ({ commit }) {
         
         let checked = [];
-		let data = localStorage.getItem('history');
+		let data = localStorage.getItem('favorite');
 		const productChecked =  data ? JSON.parse(data) : [];
 
-        commit('addhistory', {
+        commit('addfavorite', {
             object: productChecked
         })
     },
 
     removeChecked({ dispatch }, payload) {
 		let checked = [];
-		var data = localStorage.getItem('history');
+		var data = localStorage.getItem('favorite');
 		let productChecked = JSON.parse(data);
 		productChecked.forEach(element => {
 			if (element.payload.id == payload) {
@@ -109,47 +109,49 @@ const actions = {
             else{
             }
 		});
+		dispatch('getfavorite');
 
-		localStorage.setItem('history', JSON.stringify(productChecked));
-		dispatch('getHistory');
+        localStorage.setItem('favorite', JSON.stringify(productChecked));
+        dispatch('getfavorite');
+
 	},
 
 
   
 
-    addhistory ({commit,dispatch}, payload) {
+    addfavorite ({commit,dispatch}, payload) {
 
 
         let checked = [];
-		var data = localStorage.getItem('history');
+		var data = localStorage.getItem('favorite');
 		data = data ? JSON.parse(data) : [];
 
 		data.push({
 			payload
 		});
 
-        localStorage.setItem('history', JSON.stringify(data));
-        dispatch('getHistory');
+        localStorage.setItem('favorite', JSON.stringify(data));
+        dispatch('getfavorite');
 
 
 
       
     },
-    updatehistory({commit}, payload) {
+    updatefavorite({commit}, payload) {
         commit('loading', true)
         payload.updatedAt = new Date();
         
     },
 
-    deletehistory ({commit}, id) {
+    deletefavorite ({commit}, id) {
         commit('loading', true)
        
 
 
 
     },
-    sethistorySearchKey ({commit}, text) {
-        commit('sethistorySearchKey', text)
+    setfavoriteSearchKey ({commit}, text) {
+        commit('setfavoriteSearchKey', text)
     },
 
 }

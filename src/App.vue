@@ -44,8 +44,9 @@ export default {
     this.loadItems();
     this.getData();
     this.getHistory();
+    this.getfavorite()
 
-    
+
     this.$q.addressbarColor.set("#AED581");
     this.settings = this.$q.localStorage.getItem('settings')
 
@@ -61,7 +62,9 @@ export default {
 
   methods: {
     ...mapActions("palavra", ["listenPalavraRealTimeChanges",'loadItems','getData']),
-        ...mapActions("histo", ["getHistory"])
+        ...mapActions("histo", ["getHistory"]),
+                ...mapActions("favorite", ["getfavorite"])
+
 
   }
 };
