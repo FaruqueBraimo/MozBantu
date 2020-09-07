@@ -1,21 +1,33 @@
 import Vue from 'vue'
 import {dbPalavras, } from '../boot/firebase'
-
+import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 const state = {
 
-    palavras: {},
+    palavras: [],
     loading: false,
     uploadProgress: -1,
-    palavraSearchKey:  ''
+    palavraSearchKey:  '',
+    koty: {},
+    Xanghana : {},
+    api : []
+
+
 
 }
 
 const mutations = {
 
     addPalavra (state, payload) {
-       Vue.set(state.palavras, payload.id, payload.object)
+       state.palavras.push(payload.object)
+
     },
+
+    addPalavraAPI (state, payload) {
+        state.api.push(payload.object)
+     },
+
     updatePalavra (state, payload) {
         Object.assign(state.palavras[payload.id], payload.updates)
     },
@@ -49,6 +61,45 @@ const getters = {
 
 const actions = {
 
+    loadItems ({ commit }) {
+        axios
+            .get('http://localhost:8081/api/emakua', {
+               
+            })
+            .then(response => response.data)
+            .then(items => {
+                
+                commit('addPalavraAPI', {
+                    id: items.id,
+                    object: items
+                })
+             
+        })
+    },
+
+
+
+    
+    getData ({ commit }) {
+        axios
+            .get('http://localhost:8081/api/xangana', {
+               
+            })
+            .then(response => response.data)
+            .then(items => {
+                
+                items.forEach(element => {
+            
+                });
+                commit('addPalavra', {
+                    id: items.id,
+                    object: items
+                })
+                
+             
+        })
+    },
+
     listenPalavraRealTimeChanges ({state, commit}, hasInternetConection) {
 
         dbPalavras.orderBy("traducao").onSnapshot(  { includeMetadataChanges: true }, function(snapshot) {
@@ -56,10 +107,10 @@ const actions = {
                 snapshot.docChanges().forEach(function(change) {
 
                     if (change.type === "added") {
-                        commit('addPalavra', {
-                            id: change.doc.id,
-                            object: change.doc.data()
-                        })
+                        // commit('addPalavra', {
+                        //     id: change.doc.id,
+                        //     object: change.doc.data()
+                        // })
                     }
                     if (change.type === "modified") {
                         commit('updatePalavra', {

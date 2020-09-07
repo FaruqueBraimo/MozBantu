@@ -6,16 +6,15 @@
   enter-active-class="animated pulse"
   leave-active-class="animated zoomOut"
 >
-<q-list class="rounded-borders"    >
+<q-list class=""    >aa
             
               <template  v-for="(i,id,index) in searchPalavras(palavras)" >
-                  <q-item class="q-mb-sm" clickable v-ripple :key="id" > 
+                  <q-item class="" clickable v-ripple :key="id" > 
                       <q-item-section @click="details(id)" >
                           <q-item-label class="text-body1">
                             
                             
                             {{i.traducao}}</q-item-label>
-                          <q-item-label caption lines="1" v-if="i.dataAcesso"> {{i.dataAcesso | filterDate}}</q-item-label>
                       </q-item-section>
               <q-item-section side>
                           <q-btn
@@ -42,6 +41,7 @@
 
                  
               </template>
+               <q-skeleton type="text"  />
 
           </q-list> 
           </transition>

@@ -1,135 +1,153 @@
 <template>
-<q-page class="q-pa-md">
-    <div class="absolute-center" v-if="favMode == false "> 
 
-        <div class="a" >
-        {{favText}} 
+<q-page class="q-pa-md">
+ 
+<div class="absolute-center" v-if="Object.keys(favoritos).length == 0 "> 
+
+        <div class="text-body1">
+          Sem favorito
         </div>
 </div>
 
 
-  <!-- Wrapping only one DOM element, defined by QBtn -->
-
- <transition
+ 
+<transition
   appear
   enter-active-class="animated pulse"
-  leave-active-class="animated pulse"
+  leave-active-class="animated bounceOut"
 >
 <q-list class="rounded-borders">
-  
-              <template   v-for="(i,id) in favoritos"  >
+             <template   v-for="(i,id ) in favoritos"  >
+                  <q-item class="q-mb-sm" clickable v-ripple :key="id" > 
+                    
+                      <q-item-section @click="details(i.payload.id)" >
+                          <q-item-label class="text-body1"   >{{i.payload.name}}</q-item-label>
+                      </q-item-section>
+        
+                  </q-item>
+                  
+                  <q-separator :key="i.index"/>    
 
-                  <q-item class="q-mb-sm" clickable v-ripple :key="i.nome" > 
-                      <q-item-section @click="details(id)" >
-                          <q-item-label class="text-body1"   >{{i.traducao}}</q-item-label>
-                          <q-item-label caption lines="1">{{i.dataAcesso | filterDate}}</q-item-label>
-                      </q-item-section>
-              <q-item-section side>
-                          <q-btn
-                              outline
-                              no-caps
-                              flat
-                              icon="record_voice_over"
-                              rounded
-                              size="sm"
-                              color="green-4"
-                              @click="audio()"
-                          />
-                      </q-item-section>
-                  </q-item>                 
-                  <q-separator :key="i.index"/>       
+                 
               </template>
-           
           </q-list> 
-               </transition>
+
+       
+   </transition>
+
 
 </q-page>
 </template>
-
 <script>
 import { mapActions, mapState } from 'vuex'
-import { date } from 'quasar'
+import { filter } from 'minimatch'
+  import { date } from 'quasar'
+import VueGoodshareFacebook from 'vue-goodshare/src/providers/Facebook.vue'
+import VueGoodshareTwitter from 'vue-goodshare/src/providers/Twitter.vue'
+import VueGoodshare from 'vue-goodshare'
 
 export default {
 
- data () {
+components:{
+    VueGoodshareTwitter,
+    VueGoodshareFacebook,
+    VueGoodshare
+  },
+data () {
     return {
-      lorem: ''
-, favMode:false,
+
+    hisMode:false,
       saveObject: {
-          his : true,
-        
-        } 
+          his : '',
+         
+        } ,
     }
-   
+ 
   }
   ,
-
 
   computed: {
            ...mapState ('palavra', [
                'palavras'
            ]),
+
+            ...mapState ('favorite', [
+               'favorites'
+           ]),
            
-             favText() {
-                return 'Sem favoritos'
+           hisText() {
+                return 
            }
            ,
            favoritos () {
-                let favoritos = {}
+             this.getHistory()
+                let favorito = {}
 
-            Object.keys(this.palavras).forEach(key => {
+            this.favorites.forEach((key,index) => {
               
-                let fav = this.palavras[key]
-              
-                if (fav.favorito==true) {
 
-                   favoritos[key] = fav
+                //  key.forEach(element => {
+                   favorito = key
+                //  });
+                    
+                    
                  
-                }
             })
-    
-    if (  Object.keys(favoritos).length)    {
+             
+     if (  Object.keys(favorito).length)    {
        
-       this.favMode = true
+       this.hisMode = true
      }  
      
      else{
            
-       this.favMode = false
-       this.favText
+       this.hisMode = false
+       this.hisText
      }
             
-            return favoritos
-        }
+            return favorito
+}
 
-        }
-           
+           }
+         
            ,
- 
+  
      methods:{
 ...mapActions('palavra', [
                'addPalavra', 'updatePalavra'
            ]),
 
-      audio() {
-          alert('odjaa')
-      },
+                   ...mapActions("histo", ["getHistory",'removeChecked']),
+
+
+      remove(id) {
+                // this.saveObjet.hisFalse = true
+        this.saveObject.his = false
+      this.removeChecked(id)
+            }
+      
+        ,
       details(id){
                this.$router.push('palavra/' + id)
+        this.saveObject.his = true
 
                 this.updatePalavra ({
                         id: id,
                         updates: this.saveObject
                     })
-            } 
-  },
-   filters: {
+            }
+ 
+     }
+    ,
+ filters: {
             filterDate (val) {
                 let timeStamp = val.seconds * 100;
                 let data  =  new Date(timeStamp);
                 let formattedString = date.formatDate(data, 'DD - MM - YYYY')
                 return formattedString  ? 'Acessado aos: ' + formattedString : 'Nunca Acessado'
             }
-}}
+
+  }
+
+}
 </script>

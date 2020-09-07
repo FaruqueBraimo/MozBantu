@@ -2,12 +2,14 @@
 
 <q-page class="q-pa-md">
  
-<div class="absolute-center" v-if="hisMode == false "> 
+<div class="absolute-center" v-if="Object.keys(historicos).length == 0 "> 
 
         <div class="text-body1">
-        {{hisText}} 
+          Sem historico
         </div>
 </div>
+
+
  
 <transition
   appear
@@ -18,9 +20,8 @@
              <template   v-for="(i,id ) in historicos"  >
                   <q-item class="q-mb-sm" clickable v-ripple :key="id" > 
                     
-                      <q-item-section @click="details(id)" >
-                          <q-item-label class="text-body1"   >{{i.traducao}}</q-item-label>
-                          <q-item-label caption lines="1">{{i.dataAcesso | filterDate}}</q-item-label>
+                      <q-item-section @click="details(i.payload.id)" >
+                          <q-item-label class="text-body1"   >{{i.payload.name}}</q-item-label>
                       </q-item-section>
               <q-item-section side>
                           <q-btn
@@ -32,7 +33,7 @@
                               rounded
                               size="sm"
                               color="red-4"
-                              @click="remove(id)"
+                              @click="remove(i.payload.id)"
                           />
                       </q-item-section>
                   </q-item>
@@ -45,32 +46,7 @@
 
        
    </transition>
-   
-<!-- 
-    <div class="hello">
-  <h4>Bundle of most known networks</h4>
-  <vue-goodshare></vue-goodshare>
 
-  <h4>Mobile networks</h4>
-  <vue-goodshare bundle="mobile"></vue-goodshare>
-
-  <h4>Single elements with options</h4>
-  <vue-goodshare-facebook 
-   button_design="outline"
-   page_url="https://vuejsfeed.com/" 
-   title_social="Facebook"
-   has_counter
-   has_icon 
-   ></vue-goodshare-facebook>
-
-  <vue-goodshare-twitter 
-   button_design="gradient"
-   page_url="https://vuejsfeed.com/" 
-   has_icon 
-   has_square_edges
-  ></vue-goodshare-twitter>
-
-</div>  -->
 
 </q-page>
 </template>
@@ -106,25 +82,27 @@ data () {
            ...mapState ('palavra', [
                'palavras'
            ]),
+
+            ...mapState ('histo', [
+               'historys'
+           ]),
            
            hisText() {
-                return 'Sem histórico'
+                return 
            }
            ,
            historicos () {
+             this.getHistory()
                 let historico = {}
 
-            Object.keys(this.palavras).forEach((key,index) => {
+            this.historys.forEach((key,index) => {
               
-                let hist = this.palavras[key]
 
-                    if (hist.his == true) {
-
-                    if (index<50){
+                //  key.forEach(element => {
+                   historico = key
+                //  });
                     
-                        historico[key] = hist
-
-                    }}
+                    
                  
             })
              
@@ -151,13 +129,13 @@ data () {
                'addPalavra', 'updatePalavra'
            ]),
 
+                   ...mapActions("histo", ["getHistory",'removeChecked']),
+
+
       remove(id) {
                 // this.saveObjet.hisFalse = true
         this.saveObject.his = false
-       this.updatePalavra ({
-                        id: id,
-                        updates: this.saveObject
-                    })
+      this.removeChecked(id)
             }
       
         ,

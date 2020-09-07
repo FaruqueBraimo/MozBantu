@@ -13,7 +13,7 @@
         />
         
         <q-toolbar-title>
-          {{titulo}}
+          {{titulo}} 
         </q-toolbar-title>
       <q-space ></q-space>
           <q-btn flat round dense icon="search" class="q-mr-xs" @click="pesquisa=true" v-if="this.$route.fullPath == '/'" />
@@ -151,9 +151,9 @@
         <q-img class="absolute-top bg-light-green-6"   style="height: 150px ">
            <div class="absolute-center bg-transparent">
             <q-avatar size="56px" class="q-mb-sm">
-              <img src="statics/boy-avatar.png">
+              <img :src="settings.avatar">
             </q-avatar>
-            <div class="text-white text-center"> @Ella</div>
+            <div class="text-white text-center"> {{settings.name}}</div>
           </div>
         </q-img>
       </q-drawer>
@@ -269,6 +269,12 @@ export default {
 ,
 computed:{
 
+  settings () {
+        let stgs =  this.$q.localStorage.getItem('settings')
+        return stgs
+
+  },
+
  ...mapState ('palavra', [
                'palavras'
            ]),
@@ -288,8 +294,8 @@ computed:{
 titulo (){
   let caminho =  this.$route.fullPath
 
-  if ( caminho == "/") return "Ekoty"
-  else if  ( caminho == "/") return "Ekoty"
+  if ( caminho == "/") return this.settings.language
+  else if  ( caminho == "/") return this.settings.language
   else if  ( caminho == "/about") return "About"
   else if  ( caminho == "/palavradodia") return "Palavra do dia"
   else if  ( caminho == "/favoritos") return "Favoritos"

@@ -1,32 +1,8 @@
-
 <template>
-<q-page v-if="mostrar" >
-
-<div class="q-pa-sm">
-    
-
-          <div class="row q-pa-lg  text-body1">
-
-               <div class="col-10 q-pa-sm  justify-end">
-                 Modo escuro
-               </div> 
-
-            <div class="col-2">                
-              <q-toggle
-            class=""
-            color="green-4"
-            false-value= "Desativado"
-            true-value="Ativado"
-            v-model="pinkModel"
-            keep-color
-
-    />
-
-               </div> 
-
-          </div>
-
-            <div class="  q-py-md">
+  <div  class="text-grey-9 q-py-xl">
+       <div class=" q-pa-md q-py-xl">
+        <p class="text-center text-green-5 text-h6 text-bold"> Seja Bem vindo !</p>
+      <div class="  q-py-md">
        
         <q-stepper
       v-model="step"
@@ -125,113 +101,77 @@
       </template>
     </q-stepper>
   </div>
+      </div>
+    </div>
 
 
+  </div>
 
-
-   
-
-</div>
-
-</q-page>
-<processamento-def v-else/>
+    
 
 </template>
 
 <script>
-import { watch } from 'fs'
-import ProcessamentoDef from "../components/global/ProcessamentoDef";
-    import { mapActions, mapGetters , mapState} from 'vuex'
-
-
+import { mapActions,mapGetters } from 'vuex'
 export default {
-   
-
-   components: {
-    ProcessamentoDef
-    },
-data () {
+  name: 'App',
+  
+  data() {
     return {
-   blueModel: true,
-      pinkModel: 'Desativado',
-      greenModel: 42,
-      redModel: true,
-      mostrar : false,
-       step: 1,
-       saveObject : {
-          avatar : '',
-          language : ''
+      mostrar: false,
+      texto: "",
+      step: 1,
+      stepper: 1,
+      name: "",
+      shape:'',
+      male:false,
+      female:false,
+      saveObject : {
+          avatar : ''
       }
-
-    }
+    };
   },
 
-  computed:{
-
+   computed: {
   
-    
-         ...mapGetters ('config',['darkLabel']),
-   
-   
-  }
-,
+                  
 
-updated(){
- 
-}
-,
-  mounted () {
-          setTimeout (() => {
-              this.mostrar = true
-          }, 500)
+                  
 
-            let settings = this.$q.localStorage.getItem('settings');
-            this.saveObject.avatar = settings.avatar
-            this.saveObject.language = settings.language
-              this.saveObject.name = settings.name
+           },
+  
 
-        
-      },
+      methods: {
+     ...mapActions('palavra', [
+              'listenPalavraRealTimeChanges',
+          ]),
 
-      
-
-    methods:{
-
-
-...mapActions('config', [
-               'addDark', 'updateDark'
-           ]),
-
-
-            finaliar() {
+          finaliar() {
            this.$q.localStorage.set('settings', this.saveObject)
-             this.$router.go()
+                   this.$router.push('/')
+
+         
           },
 
-    }
-
-,
-  watch: {
-        pinkModel (newValue, oldValue) {
-            if ( newValue === 'Ativado') {
-                this.addDark()
-            }
-
-             if ( newValue === 'Desativado') {
-                return    this.updateDark()
-
-            }
-            
-        }
+          avatar(val){
+              if(val==='male') {
+                  this.saveObject.avatar = 'statics/boy-avatar.png'
+                  this.male = true
+                  console.log(val)
+              }
+              else {
+                this.saveObject.avatar = 'statics/avatar.png'
+                  this.female = true
+              }
+          }
 
 
 
-
-  }
-  
-
-
- 
-}
-
+}}
 </script>
+
+<style>
+
+
+
+</style>
